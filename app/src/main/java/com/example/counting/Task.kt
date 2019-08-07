@@ -32,7 +32,8 @@ class Task : AppCompatActivity() {
         answer.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE){
                 checkAns()
-            }
+                true
+            } else
             false
         }
 
