@@ -33,7 +33,9 @@
             android:layout_alignParentBottom="true"
             android:text="Заново"
             android:id="@+id/again"
+            android:textSize="20dp"
             android:layout_margin="15dp"
+            android:padding="15dp"
     />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.counting
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_task.*
 
-class Task : AppCompatActivity() {
+class Task : Activity() {
 
     var a : Int = 0
     var b : Int = 0
@@ -22,7 +23,8 @@ class Task : AppCompatActivity() {
         Status.solved = 0
         Status.errors = 0
         statustext.text =
-            "Задание: " + Status.need + " раз\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+            "Задание: " + Status.need + " раз" + Status.makeEnding() +
+                    "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
         generateProblem()
 
         submit.setOnClickListener {
@@ -51,14 +53,16 @@ class Task : AppCompatActivity() {
             } else {
                 generateProblem()
                 statustext.text =
-                    "Задание: " + Status.need + " раз\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+                    "Задание: " + Status.need + " раз" + Status.makeEnding() +
+                            "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
             }
         } else {
             Toast.makeText(this, "Неравильно", Toast.LENGTH_SHORT).show()
             answer.text.clear()
             Status.errors++
             statustext.text =
-                "Задание: " + Status.need + " раз\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+                "Задание: " + Status.need + " раз" + Status.makeEnding() +
+                        "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
         }
     }
 
