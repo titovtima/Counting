@@ -12,7 +12,8 @@ class Congratulations : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_congratulations)
 
-        results.text = "Выполнено: " + Status.solved + "\n" + "Ошибок: " + Status.errors
+        results.text = "Режим: " + Status.levels[Status.level] +
+                "\nВыполнено: " + Status.solved + "\nОшибок: " + Status.errors
 
         again.setOnClickListener {
             val intent = Intent(this, Task::class.java)

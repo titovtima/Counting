@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_task.*
 import java.lang.Exception
 
@@ -24,9 +23,10 @@ class Task : Activity() {
 
         Status.solved = 0
         Status.errors = 0
-        statustext.text =
-            "Задание: " + Status.need + " раз" + Status.makeEnding() +
-                    "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+//        statustext.text =
+//            "Задание: " + Status.need + " раз" + Status.makeEnding() +
+//                    "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+        statustext.text = "Необходимо: " + Status.need + "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
         generateProblem()
 
         submit.setOnClickListener {
@@ -54,17 +54,15 @@ class Task : Activity() {
                     startActivity(intent)
                 } else {
                     generateProblem()
-                    statustext.text =
-                        "Задание: " + Status.need + " раз" + Status.makeEnding() +
-                                "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+                    statustext.text = "Необходимо: " + Status.need +
+                            "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
                 }
             } else {
                 Toast.makeText(this, "Неравильно", Toast.LENGTH_SHORT).show()
                 answer.text.clear()
                 Status.errors++
-                statustext.text =
-                    "Задание: " + Status.need + " раз" + Status.makeEnding() +
-                            "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+                statustext.text = "Необходимо: " + Status.need +
+                        "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
             }
         } catch (e : Exception){
             Toast.makeText(this, "Введите число", Toast.LENGTH_SHORT).show()
@@ -72,72 +70,131 @@ class Task : Activity() {
     }
 
     fun generateProblem(){
-        action = (Math.random()*4).toInt()
         a = 0
         b = 0
+        when (Status.level){
+            0 -> {
+                action = (Math.random()*2).toInt()
+                a = (Math.random()*20).toInt()
+                b = (Math.random()*(31 - a)).toInt()
+                if (action == 0) rightAns = a+b
+                else {
+                    rightAns = a
+                    a += b
+                }
+            }
+            1 -> {
+                action = (Math.random()*4).toInt()
+                if ((action == 0)||(action == 1)){
+                    a = (Math.random()*100).toInt()
+                    b = (Math.random()*(201 - a)).toInt()
+                    if (action == 0) rightAns = a+b
+                    else {
+                        rightAns = a
+                        a += b
+                    }
+                }
+                if ((action == 2)||(action == 3)){
+                    while (a == 0) a = (Math.random()*10).toInt()
+                    while (b == 0) b = (Math.random()*10).toInt()
+                    if (action == 2) rightAns = a*b
+                    else {
+                        rightAns = a
+                        a *= b
+                    }
+                }
+            }
+            2 -> {
+                action = (Math.random()*4).toInt()
 
-        if (action == 0){
-            a = (Math.random()*1000).toInt()
-            b = (Math.random()*1000).toInt()
-            problem.text = a.toString() + " + " + b.toString()
-            rightAns = a + b
-        }
-        if (action == 1){
-            a = (Math.random()*1000).toInt()
-            b = (Math.random()*a).toInt()
-            problem.text = a.toString() + " - " + b.toString()
-            rightAns = a - b
-        }
-        if (action == 2){
-            val type = (Math.random()*2).toInt()
-            if (type == 0){
+                var maxSum = 1
+                for (i in 1..Status.level){
+                    maxSum *= 10
+                }
+                if (action == 0){
+                    a = (Math.random()*1000).toInt()
+                    b = (Math.random()*(1001 - a)).toInt()
+//                    problem.text = a.toString() + " + " + b.toString()
+                    rightAns = a + b
+                }
+                if (action == 1){
+                    a = (Math.random()*1000).toInt()
+                    b = (Math.random()*(1001 - a)).toInt()
+                    rightAns = a
+                    a += b
+//                    problem.text = a.toString() + " - " + b.toString()
+                }
+                if ((action == 2)||(action == 3)){
+                    val type = (Math.random()*(Status.level - 1)).toInt()
+                    if (type == 0){
+                        while (a == 0) a = (Math.random()*10).toInt()
+                        while (b == 0) b = (Math.random()*10).toInt()
+                        var step = (Math.random()*3).toInt()
+                        while (step > 0){
+                            a *= 10
+                            step--
+                        }
+                        step = (Math.random()*2).toInt()
+                        while (step > 0){
+                            b *= 10
+                            step--
+                        }
+                    }
+                    if (type == 1){
+                        while (a == 0) a = (Math.random()*100).toInt()
+                        while (b == 0) b = (Math.random()*10).toInt()
+                        if (Math.random() >= 0.5)
+                            b *= 10
+                    }
+                    if (action == 2) {
+//                        problem.text = a.toString() + " * " + b.toString()
+                        rightAns = a * b
+                    }
+                    if (action == 3){
+                        rightAns = a
+                        a *= b
+//                        problem.text = a.toString() + " / " + b.toString()
+                    }
+                }
+            }
+            3 -> {
+                action = (Math.random()*4).toInt()
+
+                if (action < 2){
+                    a = (Math.random()*5000).toInt()
+                    b = (Math.random()*5000).toInt()
+                    if (action == 0) rightAns = a+b
+                    else {
+                        rightAns = a
+                        a += b
+                    }
+                }
+                if ((action == 2)||(action == 3)){
+                    while (a == 0) a = (Math.random()*100).toInt()
+                    while (b == 0) b = (Math.random()*100).toInt()
+                    if (action == 2) rightAns = a*b
+                    else {
+                        rightAns = a
+                        a *= b
+                    }
+                }
+            }
+            4 -> {
+                action = (Math.random()*2).toInt() + 2
                 while (a == 0) a = (Math.random()*10).toInt()
                 while (b == 0) b = (Math.random()*10).toInt()
-                var step = (Math.random()*3).toInt()
-                while (step > 0){
-                    a *= 10
-                    step--
-                }
-                step = (Math.random()*3).toInt()
-                while (step > 0){
-                    b *= 10
-                    step--
+                if (action == 2) rightAns = a*b
+                else {
+                    rightAns = a
+                    a *= b
                 }
             }
-            if (type == 1){
-                while (a == 0) a = (Math.random()*100).toInt()
-                while (b == 0) b = (Math.random()*10).toInt()
-                if (Math.random() >= 0.5)
-                    b *= 10
-            }
-            problem.text = a.toString() + " * " + b.toString()
-            rightAns = a*b
         }
-        if (action == 3){
-            val type = (Math.random()*2).toInt()
-            if (type == 0){
-                while (a == 0) a = (Math.random()*10).toInt()
-                while (b == 0) b = (Math.random()*10).toInt()
-                var step = (Math.random()*3).toInt()
-                while (step > 0){
-                    a *= 10
-                    step--
-                }
-                step = (Math.random()*3).toInt()
-                while (step > 0){
-                    b *= 10
-                    step--
-                }
-            }
-            if (type == 1){
-                while (a == 0) a = (Math.random()*100).toInt()
-                while (b == 0) b = (Math.random()*10).toInt()
-                if (Math.random() >= 0.5)
-                    b *= 10
-            }
-            rightAns = a
-            a *= b
-            problem.text = a.toString() + " / " + b.toString()
+        when (action){
+            0 -> problem.text = a.toString() + " + " + b.toString()
+            1 -> problem.text = a.toString() + " - " + b.toString()
+            2 -> problem.text = a.toString() + " * " + b.toString()
+            3 -> problem.text = a.toString() + " / " + b.toString()
         }
     }
 }

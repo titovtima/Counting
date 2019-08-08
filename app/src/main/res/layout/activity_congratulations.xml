@@ -21,10 +21,10 @@
               android:id="@+id/results"
               android:layout_below="@id/congratulations"
               android:textAlignment="textEnd"
-              android:text="texttry\nmay"
               android:layout_alignParentRight="true"
               android:textSize="20dp"
-              android:layout_margin="15dp"
+              android:layout_marginRight="15dp"
+              android:layout_marginTop="20dp"
     />
 
     <Button android:layout_width="wrap_content"
