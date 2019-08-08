@@ -11,5 +11,10 @@ class Status {
                 && ((this.need % 100 < 10) || (this.need % 100 > 15))) return "а"
             return ""
         }
+
+        fun makeEnding(i : Int) : String {
+            if ((i % 10 > 1) && (i % 10 < 5) && ((i % 100 < 10) || (i % 100 > 15))) return "а"
+            return ""
+        }
     }
 }

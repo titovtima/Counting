@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_task.*
+import java.lang.Exception
 
 class Task : Activity() {
 
@@ -38,31 +40,34 @@ class Task : Activity() {
             } else
             false
         }
-
     }
 
     fun checkAns(){
-        if (answer.text.toString().toInt() == rightAns) {
-            Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show()
-            answer.text.clear()
-            Status.solved++
-            if (Status.solved == Status.need) {
-                val intent = Intent(this, Congratulations::class.java)
+        try {
+            if (answer.text.toString().toInt() == rightAns) {
+                Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show()
+                answer.text.clear()
+                Status.solved++
+                if (Status.solved == Status.need) {
+                    val intent = Intent(this, Congratulations::class.java)
 
-                startActivity(intent)
+                    startActivity(intent)
+                } else {
+                    generateProblem()
+                    statustext.text =
+                        "Задание: " + Status.need + " раз" + Status.makeEnding() +
+                                "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+                }
             } else {
-                generateProblem()
+                Toast.makeText(this, "Неравильно", Toast.LENGTH_SHORT).show()
+                answer.text.clear()
+                Status.errors++
                 statustext.text =
                     "Задание: " + Status.need + " раз" + Status.makeEnding() +
                             "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
             }
-        } else {
-            Toast.makeText(this, "Неравильно", Toast.LENGTH_SHORT).show()
-            answer.text.clear()
-            Status.errors++
-            statustext.text =
-                "Задание: " + Status.need + " раз" + Status.makeEnding() +
-                        "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+        } catch (e : Exception){
+            Toast.makeText(this, "Введите число", Toast.LENGTH_SHORT).show()
         }
     }
 
