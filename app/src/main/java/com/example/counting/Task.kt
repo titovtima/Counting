@@ -58,7 +58,7 @@ class Task : Activity() {
                             "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
                 }
             } else {
-                Toast.makeText(this, "Неравильно", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Неправильно", Toast.LENGTH_SHORT).show()
                 answer.text.clear()
                 Status.errors++
                 statustext.text = "Необходимо: " + Status.need +

@@ -24,7 +24,7 @@ class MainActivity : Activity() {
             try {
                 Status.need = task.text.toString().toInt()
                 val intent = Intent(this, Task::class.java)
-
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 startActivity(intent)
             } catch (e : Exception){
                 Toast.makeText(this, "Введите количество заданий", Toast.LENGTH_SHORT).show()
