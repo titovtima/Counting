@@ -19,6 +19,7 @@ class SigningFragment : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.signing_fragment, null)
+
         view.reg.setOnClickListener {
             val db = dbHelper.writableDatabase
 
@@ -63,18 +64,32 @@ class SigningFragment : DialogFragment() {
             val db = dbHelper.writableDatabase
             val usname = view.username.text.toString()
 
-            val cur = db.rawQuery("SELECT id FROM users WHERE name = ?;", arrayOf(usname))
+            val cur = db.rawQuery("SELECT id, password FROM users WHERE name = ?;", arrayOf(usname))
 
             if (cur.moveToFirst()) {
-                val id = cur.getInt(cur.getColumnIndex("id"))
+                if (view.password.text.toString() == cur.getString(cur.getColumnIndex("password"))) {
 
-                val dialog = AlertDialog.Builder(Status.contextForSignDialog)
-                dialog.setTitle("Вы уверены, что хотите удалить пользователя " + usname + "?")
-                dialog.setMessage("Все данные пользователя будут удалены")
-                dialog.setPositiveButton("Удалить", DialogInterface.OnClickListener() { dialog, which ->
-                    db.execSQL("DELETE FROM users WHERE id = ?;", arrayOf(id))
-                    Status.existID.remove(id)
-                })
+                    val id = cur.getInt(cur.getColumnIndex("id"))
+
+                    val dialog = AlertDialog.Builder(Status.contextForSignDialog)
+                    dialog.setTitle("Вы уверены, что хотите удалить пользователя " + usname + "?")
+                    dialog.setMessage("Все данные пользователя будут удалены")
+                    dialog.setPositiveButton("Удалить", { dialog, which ->
+                        db.execSQL("DELETE FROM users WHERE id = ?;", arrayOf(id))
+                        Status.existID.remove(id)
+                        dialog.dismiss()
+                    })
+                    dialog.setNegativeButton("Отмена", { dialog, which ->
+                        dialog.cancel()
+                    })
+                    dialog.setCancelable(true)
+
+                    dialog.show()
+                } else {
+                    Toast.makeText(Status.contextForSignDialog, "Вы ввели неверный пароль",
+                        Toast.LENGTH_SHORT).show()
+                    view.password.setText("")
+                }
             } else {
                 Toast.makeText(Status.contextForSignDialog, "Пользователя с таким именем не существует",
                     Toast.LENGTH_SHORT).show()
@@ -94,6 +109,12 @@ class SigningFragment : DialogFragment() {
                 view.showpassw.text = "Скрыть"
                 view.password.setSelection(view.password.text.toString().length)
             }
+        }
+
+        view.guest.setOnClickListener {
+            Status.userID = -1
+            Status.userName = "Гость"
+            dismiss()
         }
 
         return view
