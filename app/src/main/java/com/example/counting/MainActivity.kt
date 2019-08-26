@@ -1,6 +1,7 @@
 package com.example.counting
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -48,6 +49,17 @@ class MainActivity : Activity() {
             }
         }
 
+        Status.saveSettings = getSharedPreferences(Status.nameFileSettings, Context.MODE_PRIVATE)
+
+        if (Status.saveSettings!!.contains(Status.saveIdKey))
+            Status.userID = Status.saveSettings!!.getInt(Status.saveIdKey, -1)
+        if (Status.saveSettings!!.contains(Status.saveNameKey))
+            Status.userName = Status.saveSettings!!.getString(Status.saveNameKey, "Гость")
+        if (Status.saveSettings!!.contains(Status.saveNeedKey))
+            Status.need = Status.saveSettings!!.getInt(Status.saveNeedKey, 7)
+        if (Status.saveSettings!!.contains(Status.saveLevelKey))
+            Status.level = Status.saveSettings!!.getInt(Status.saveLevelKey, 2)
+
         task.setText(Status.need.toString())
 
 //        task.addTextChangedListener(object : TextWatcher {
@@ -90,5 +102,16 @@ class MainActivity : Activity() {
         super.onResume()
 
         update()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        Status.need = task.text.toString().toInt()
+
+        val editor = Status.saveSettings!!.edit()
+        editor.putInt(Status.saveLevelKey, Status.level)
+        editor.putInt(Status.saveNeedKey, Status.need)
+        editor.apply()
     }
 }

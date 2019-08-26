@@ -60,4 +60,13 @@ class UsersActivity : AppCompatActivity() {
             Toast.makeText(this, "Невозможно найти данные для пользователя", Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+
+        val editor = Status.saveSettings!!.edit()
+        editor.putInt(Status.saveIdKey, Status.userID)
+        editor.putString(Status.saveNameKey, Status.userName)
+        editor.apply()
+    }
 }

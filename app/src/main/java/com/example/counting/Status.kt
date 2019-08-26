@@ -2,6 +2,7 @@ package com.example.counting
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 
 class Status {
@@ -13,10 +14,17 @@ class Status {
         var userID = -1
         var userName = "Гость"
         var showpassw = false
+        val nameFileSettings = "settings"
+        val saveNameKey = "name"
+        val saveIdKey = "id"
+        val saveNeedKey = "tasksNeed"
+        val saveLevelKey = "level"
 
         var existID : MutableList<Int> = emptyList<Int>().toMutableList()
 
         var contextForSignDialog : UsersActivity? = null
+
+        var saveSettings : SharedPreferences? = null
 
         val levels = arrayOf("Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4", "Таблица умножения")
 
