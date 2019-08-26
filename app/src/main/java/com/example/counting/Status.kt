@@ -12,6 +12,7 @@ class Status {
         var level = 2
         var userID = -1
         var userName = "Гость"
+        var showpassw = false
 
         var existID : MutableList<Int> = emptyList<Int>().toMutableList()
 

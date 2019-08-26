@@ -9,19 +9,38 @@
               android:layout_height="wrap_content"
               android:hint="Введите имя пользователя"
               android:id="@+id/username"
+              android:layout_marginTop="20dp"
+              android:layout_marginLeft="10dp"
     />
 
-    <EditText android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:hint="Введите пароль"
-              android:id="@+id/password"
-              android:inputType="numberPassword"
-    />
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+    >
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Введите пароль"
+                  android:id="@+id/password"
+                  android:inputType="numberPassword"
+                  android:layout_toLeftOf="@id/showpassw"
+        />
+
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/showpassw"
+                android:text="Показать"
+                android:layout_alignParentRight="true"
+        />
+
+    </RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:weightSum="3"
+                  android:weightSum="2"
+                  android:layout_marginTop="20dp"
     >
 
         <Button android:layout_width="match_parent"
@@ -38,13 +57,19 @@
                 android:id="@+id/reg"
         />
 
-        <Button android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+    </LinearLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+    >
+
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:text="Удалить пользователя"
                 android:id="@+id/delete"
         />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

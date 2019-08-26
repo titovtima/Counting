@@ -1,12 +1,15 @@
 package com.example.counting
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.signing_fragment.view.*
 
@@ -57,7 +60,40 @@ class SigningFragment : DialogFragment() {
         }
 
         view.delete.setOnClickListener {
+            val db = dbHelper.writableDatabase
+            val usname = view.username.text.toString()
 
+            val cur = db.rawQuery("SELECT id FROM users WHERE name = ?;", arrayOf(usname))
+
+            if (cur.moveToFirst()) {
+                val id = cur.getInt(cur.getColumnIndex("id"))
+
+                val dialog = AlertDialog.Builder(Status.contextForSignDialog)
+                dialog.setTitle("Вы уверены, что хотите удалить пользователя " + usname + "?")
+                dialog.setMessage("Все данные пользователя будут удалены")
+                dialog.setPositiveButton("Удалить", DialogInterface.OnClickListener() { dialog, which ->
+                    db.execSQL("DELETE FROM users WHERE id = ?;", arrayOf(id))
+                    Status.existID.remove(id)
+                })
+            } else {
+                Toast.makeText(Status.contextForSignDialog, "Пользователя с таким именем не существует",
+                    Toast.LENGTH_SHORT).show()
+            }
+            cur.close()
+        }
+
+        view.showpassw.setOnClickListener {
+            if (Status.showpassw){
+                view.password.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                Status.showpassw = false
+                view.showpassw.text = "Показать"
+                view.password.setSelection(view.password.text.toString().length)
+            } else {
+                view.password.inputType = InputType.TYPE_CLASS_NUMBER
+                Status.showpassw = true
+                view.showpassw.text = "Скрыть"
+                view.password.setSelection(view.password.text.toString().length)
+            }
         }
 
         return view

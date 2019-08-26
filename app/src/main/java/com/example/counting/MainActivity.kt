@@ -31,7 +31,6 @@ class MainActivity : Activity() {
             } while (cur.moveToNext())
         cur.close()
 
-        userbutton.text = Status.userName
         userbutton.setOnClickListener {
             val intent = Intent(this, UsersActivity::class.java)
 
@@ -81,5 +80,15 @@ class MainActivity : Activity() {
 
             }
         }
+    }
+
+    fun update(){
+        userbutton.text = Status.userName
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        update()
     }
 }
