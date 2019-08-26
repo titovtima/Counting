@@ -8,7 +8,10 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/count"
             android:supportsRtl="true"
-            android:theme="@android:style/Theme.Light.NoTitleBar">
+            android:theme="@style/AppTheme.NoTop">
+        <!-- android:theme="@android:style/Theme.Light.NoTitleBar"> -->
+        <activity android:name=".UsersActivity">
+        </activity>
         <activity android:name=".Congratulations">
         </activity>
         <activity android:name=".Task">

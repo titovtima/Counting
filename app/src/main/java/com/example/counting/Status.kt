@@ -1,11 +1,21 @@
 package com.example.counting
 
+import android.app.Activity
+import android.content.Context
+import android.support.v7.app.AppCompatActivity
+
 class Status {
     companion object {
         var solved = 0
         var need = 7
         var errors = 0
         var level = 2
+        var userID = -1
+        var userName = "Гость"
+
+        var existID : MutableList<Int> = emptyList<Int>().toMutableList()
+
+        var contextForSignDialog : UsersActivity? = null
 
         val levels = arrayOf("Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4", "Таблица умножения")
 

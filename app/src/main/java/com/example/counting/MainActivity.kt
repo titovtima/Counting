@@ -16,9 +16,27 @@ import java.lang.Exception
 //class MainActivity : AppCompatActivity() {
 class MainActivity : Activity() {
 
+    val dbHelper = DBHelper(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val db = dbHelper.writableDatabase
+
+        val cur = db.rawQuery("SELECT id FROM users;", null)
+        if (cur.moveToFirst())
+            do {
+                Status.existID.add(cur.getInt(cur.getColumnIndex("id")))
+            } while (cur.moveToNext())
+        cur.close()
+
+        userbutton.text = Status.userName
+        userbutton.setOnClickListener {
+            val intent = Intent(this, UsersActivity::class.java)
+
+            startActivity(intent)
+        }
 
         start.setOnClickListener {
             try {
