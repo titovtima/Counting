@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,8 +15,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
-//class MainActivity : AppCompatActivity() {
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     val dbHelper = DBHelper(this)
 
@@ -38,27 +38,40 @@ class MainActivity : Activity() {
             startActivity(intent)
         }
 
+        settings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+
+            startActivity(intent)
+        }
+
         start.setOnClickListener {
             try {
                 Status.need = task.text.toString().toInt()
                 val intent = Intent(this, Task::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 startActivity(intent)
             } catch (e : Exception){
                 Toast.makeText(this, "Введите количество заданий", Toast.LENGTH_SHORT).show()
             }
         }
 
-        Status.saveSettings = getSharedPreferences(Status.nameFileSettings, Context.MODE_PRIVATE)
 
-        if (Status.saveSettings!!.contains(Status.saveIdKey))
-            Status.userID = Status.saveSettings!!.getInt(Status.saveIdKey, -1)
-        if (Status.saveSettings!!.contains(Status.saveNameKey))
-            Status.userName = Status.saveSettings!!.getString(Status.saveNameKey, "Гость")
-        if (Status.saveSettings!!.contains(Status.saveNeedKey))
-            Status.need = Status.saveSettings!!.getInt(Status.saveNeedKey, 7)
-        if (Status.saveSettings!!.contains(Status.saveLevelKey))
-            Status.level = Status.saveSettings!!.getInt(Status.saveLevelKey, 2)
+        if (!Status.loaded) try {
+            Status.saveSettings = getSharedPreferences(Status.nameFileSettings, Context.MODE_PRIVATE)
+
+            if (Status.saveSettings!!.contains(Status.saveIdKey))
+                Status.userID = Status.saveSettings!!.getInt(Status.saveIdKey, -1)
+            if (Status.saveSettings!!.contains(Status.saveNameKey))
+                Status.userName = Status.saveSettings!!.getString(Status.saveNameKey, "Гость")
+            if (Status.saveSettings!!.contains(Status.saveNeedKey))
+                Status.need = Status.saveSettings!!.getInt(Status.saveNeedKey, 7)
+            if (Status.saveSettings!!.contains(Status.saveLevelKey))
+                Status.level = Status.saveSettings!!.getInt(Status.saveLevelKey, 2)
+            if (Status.saveSettings!!.contains(Status.saveTimeModeKey))
+                Status.timeMode = Status.saveSettings!!.getBoolean(Status.saveTimeModeKey, false)
+            Log.d("tag123", "loaded")
+            Status.loaded = true
+        } catch (e : Exception){}
 
         task.setText(Status.need.toString())
 

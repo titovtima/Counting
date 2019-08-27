@@ -19,6 +19,10 @@ class Status {
         val saveIdKey = "id"
         val saveNeedKey = "tasksNeed"
         val saveLevelKey = "level"
+        val saveTimeModeKey = "timeMode"
+        var timeMode = false
+        var time : Long = 0
+        var loaded = false
 
         var existID : MutableList<Int> = emptyList<Int>().toMutableList()
 

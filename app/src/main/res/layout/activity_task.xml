@@ -18,9 +18,21 @@
               android:layout_marginTop="40dp"
     />
 
+    <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format="Время %s"
+            android:textSize="20dp"
+            android:layout_below="@id/problem"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/time"
+        />
+
     <EditText android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_below="@id/problem"
+              android:layout_below="@id/time"
               android:id="@+id/answer"
               android:layout_centerHorizontal="true"
               android:layout_marginVertical="20dp"

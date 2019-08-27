@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.counting">
+        package="com.example.counting">
 
     <application
             android:allowBackup="true"
@@ -9,18 +9,16 @@
             android:roundIcon="@mipmap/count"
             android:supportsRtl="true"
             android:theme="@style/AppTheme.NoTop">
+        <activity android:name=".SettingsActivity"></activity>
         <!-- android:theme="@android:style/Theme.Light.NoTitleBar"> -->
-        <activity android:name=".UsersActivity">
-        </activity>
-        <activity android:name=".Congratulations">
-        </activity>
-        <activity android:name=".Task">
-        </activity>
+        <activity android:name=".UsersActivity"></activity>
+        <activity android:name=".Congratulations"></activity>
+        <activity android:name=".Task"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

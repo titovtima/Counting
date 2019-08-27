@@ -1,16 +1,18 @@
 package com.example.counting
 
-import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.RelativeLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_task.*
 import java.lang.Exception
 
-class Task : Activity() {
+class Task : AppCompatActivity() {
 
     var a : Int = 0
     var b : Int = 0
@@ -21,6 +23,21 @@ class Task : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
 
+        if (Status.timeMode){
+            time.visibility = View.VISIBLE
+            val par = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            par.addRule(RelativeLayout.BELOW, time.id)
+            par.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            answer.layoutParams = par
+        } else {
+            time.visibility = View.INVISIBLE
+            val par = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            par.addRule(RelativeLayout.BELOW, problem.id)
+            par.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            answer.layoutParams = par
+        }
+
+        Status.time = 0
         Status.solved = 0
         Status.errors = 0
 //        statustext.text =
@@ -42,6 +59,29 @@ class Task : Activity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        problem.background = null
+
+        if (Status.timeMode) {
+            time.base = SystemClock.elapsedRealtime() - Status.time
+            time.start()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        problem.setBackgroundColor(resources.getColor(R.color.colorDarkGrey))
+
+        if (Status.timeMode) {
+            Status.time = SystemClock.elapsedRealtime() - time.base
+            time.stop()
+            Log.d("tag123", Status.time.toString())
+        }
+    }
+
     fun checkAns(){
         try {
             if (answer.text.toString().toInt() == rightAns) {
@@ -49,6 +89,12 @@ class Task : Activity() {
                 answer.text.clear()
                 Status.solved++
                 if (Status.solved == Status.need) {
+                    if (Status.timeMode) {
+                        Status.time = SystemClock.elapsedRealtime() - time.base
+                        time.stop()
+                        Log.d("tag123", Status.time.toString())
+                    }
+
                     val intent = Intent(this, Congratulations::class.java)
 
                     startActivity(intent)

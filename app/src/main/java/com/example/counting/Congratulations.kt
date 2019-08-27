@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_congratulations.*
 
 class Congratulations : Activity() {
@@ -16,6 +17,18 @@ class Congratulations : Activity() {
 
         results.text = "Режим: " + Status.levels[Status.level] +
                 "\nВыполнено: " + Status.solved + "\nОшибок: " + Status.errors
+        if (Status.timeMode) {
+            var m = (Status.time/1000/60).toString()
+            var s = (Status.time/1000 % 60).toString()
+            if (m.toInt() < 10)
+                m = "0" + m
+            if (s.toInt() < 10)
+                s = "0" + s
+
+            results.text = results.text.toString() + "\nВремя: " + m + ":" + s
+        }
+
+        Log.d("tag123", Status.time.toString())
 
         if (Status.userID != -1) {
             var db = dbHelper.writableDatabase
@@ -29,7 +42,7 @@ class Congratulations : Activity() {
 
         again.setOnClickListener {
             val intent = Intent(this, Task::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             startActivity(intent)
         }
 
@@ -38,5 +51,12 @@ class Congratulations : Activity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 }
