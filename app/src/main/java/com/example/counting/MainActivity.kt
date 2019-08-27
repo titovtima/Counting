@@ -79,7 +79,7 @@ class MainActivity : Activity() {
 //            }
 //        })
 
-        val lvladap = ArrayAdapter(this, android.R.layout.simple_list_item_1, Status.levels)
+        val lvladap = ArrayAdapter(this, android.R.layout.simple_spinner_item, Status.levels)
         lvladap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         lvl.adapter = lvladap
         lvl.setSelection(Status.level)
@@ -107,7 +107,7 @@ class MainActivity : Activity() {
     override fun onStop() {
         super.onStop()
 
-        Status.need = task.text.toString().toInt()
+        try { Status.need = task.text.toString().toInt() } catch (e : Exception){}
 
         val editor = Status.saveSettings!!.edit()
         editor.putInt(Status.saveLevelKey, Status.level)
