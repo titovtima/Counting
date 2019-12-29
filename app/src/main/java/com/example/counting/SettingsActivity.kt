@@ -13,17 +13,21 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        switchTime.isChecked = Status.timeMode
-
-        switchTime.setOnClickListener {
-            Status.timeMode = switchTime.isChecked
-            Log.d("tag123", switchTime.isChecked.toString())
-        }
+        setTimeSwitcher()
 
         back.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+        }
+    }
+
+    private fun setTimeSwitcher() {
+        switchTime.isChecked = Status.timeMode
+
+        switchTime.setOnClickListener {
+            Status.timeMode = switchTime.isChecked
+            Log.d("tag123", switchTime.isChecked.toString())
         }
     }
 
