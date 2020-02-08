@@ -85,24 +85,7 @@ class Task : AppCompatActivity() {
     fun checkAns(){
         try {
             if (answer.text.toString().toInt() == rightAns) {
-                Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show()
-                answer.text.clear()
-                Status.solved++
-                if (Status.solved == Status.need) {
-                    if (Status.timeMode) {
-                        Status.time = SystemClock.elapsedRealtime() - time.base
-                        time.stop()
-                        Log.d("tag123", Status.time.toString())
-                    }
-
-                    val intent = Intent(this, Congratulations::class.java)
-
-                    startActivity(intent)
-                } else {
-                    generateProblem()
-                    statustext.text = "Необходимо: " + Status.need +
-                            "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
-                }
+                whenOneSolved()
             } else {
                 Toast.makeText(this, "Неправильно", Toast.LENGTH_SHORT).show()
                 answer.text.clear()
@@ -113,6 +96,29 @@ class Task : AppCompatActivity() {
         } catch (e : Exception){
             Toast.makeText(this, "Введите число", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun whenOneSolved() {
+        Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show()
+        answer.text.clear()
+        Status.solved++
+        if (Status.solved == Status.need) {
+            whenAllSolved()
+        } else {
+            generateProblem()
+            statustext.text = "Необходимо: " + Status.need +
+                    "\nСделано: " + Status.solved + "\nОшибок: " + Status.errors
+        }
+    }
+
+    fun whenAllSolved() {
+        if (Status.timeMode) {
+            Status.time = SystemClock.elapsedRealtime() - time.base
+            time.stop()
+            Log.d("tag123", Status.time.toString())
+        }
+        val intent = Intent(this, Congratulations::class.java)
+        startActivity(intent)
     }
 
     fun generateProblem(){
