@@ -55,6 +55,7 @@
                 android:layout_weight="1"
                 android:text="Регистрация"
                 android:id="@+id/reg"
+                android:onClick="onClickReg"
         />
 
     </LinearLayout>
