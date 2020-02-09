@@ -27,7 +27,7 @@ class Status {
 
         var saveSettings : SharedPreferences? = null
 
-        val levels = arrayOf("Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4", "Таблица умножения")
+        val levels = arrayOf("Таблица умножения", "Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4")
 
 //        fun makeEnding() : String {
 //            if ((this.need % 10 > 1) && (this.need % 10 < 5)
